@@ -17,7 +17,7 @@ export const createTask = async (req, res) => {
     const task = new Task({ ...data, owner: req.user.id });
     try {
         await task.save();
-        res.redirect('/task');
+        res.redirect('/tasks');
     } catch (error) {
         console.log(error.message);
     }

@@ -5,8 +5,16 @@ import { createTask, getTasks } from '../controllers/tasksController.js';
 
 const router = new Router();
 
-router.get('/task', getTasks);
+router.use((req, res, next) => {
+    if(!req.user) return res.redirect("/login");
+    next();
+})
 
-router.post('/task', checkSchema(taskValidationSchema), createTask);
+
+router.get('/', (req, res) => res.redirect("/tasks"))
+
+router.get('/tasks', getTasks);
+
+router.post('/tasks', checkSchema(taskValidationSchema), createTask);
 
 export default router;
