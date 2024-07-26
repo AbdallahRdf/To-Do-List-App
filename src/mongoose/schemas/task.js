@@ -7,7 +7,10 @@ const taskSchema = new mongoose.Schema({
     },
     description: mongoose.SchemaTypes.String,
     dueDate: mongoose.SchemaTypes.Date,
-    status: mongoose.SchemaTypes.String,
+    status: {
+        type: mongoose.SchemaTypes.String,
+        default: "todo"
+    },
     owner: mongoose.SchemaTypes.ObjectId,
 })
 

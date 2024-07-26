@@ -22,3 +22,14 @@ export const createTask = async (req, res) => {
         console.log(error.message);
     }
 }
+
+export const deleteTask = async (req, res) => {
+    try {
+        const task = await Task.findById(req.params.id);
+        if(!task) throw new Error('Error during delete task: no such task is found');
+        await task.deleteOne();
+        return res.redirect('/tasks');
+    } catch (error) {
+        console.log(error.message);
+    }
+}

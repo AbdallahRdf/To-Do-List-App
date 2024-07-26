@@ -69,7 +69,8 @@ export const taskValidationSchema = {
         },
         isString: {
             errorMessage: "description must be a string"
-        }
+        },
+        optional: true
     },
     dueDate: {
         trim: true,
@@ -81,7 +82,8 @@ export const taskValidationSchema = {
         },
         isDate: {
             errorMessage: "Due date must be a date"
-        }
+        },
+        optional: true
     },
     status: {
         trim: true,
@@ -90,6 +92,7 @@ export const taskValidationSchema = {
         },
         isString: {
             errorMessage: "Status must be string"
-        }
+        },
+        optional: true
     }
 }
