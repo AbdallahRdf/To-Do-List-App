@@ -6,6 +6,32 @@
     <title>Home</title>
 </head>
 <body>
-    <h1>Welcome home</h1>
+    <h3>Add more tasks</h3>
+    <form action="/task" method="post">
+        <div>
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title">
+        </div>
+        <div>
+            <label for="description">Description</label>
+            <textarea name="description" id="description"></textarea>
+        </div>
+        <div>
+            <label for="dueDate">Due Date</label>
+            <input type="date" name="dueDate" id="dueDate">
+        </div>
+        <div>
+            <label for="status">Status</label>
+            <select name="status" id="status">
+                <option value="done">Done</option>
+                <option value="doing">Doing</option>
+                <option value="todo">To-do</option>
+            </select>
+        </div>
+        <div><input type="submit" value="Save"></div>
+    </form>
+    <div>
+        <%= tasks %>
+    </div>
 </body>
 </html>

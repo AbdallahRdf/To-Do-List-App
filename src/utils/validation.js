@@ -51,3 +51,45 @@ export const signupValidationSchema = {
         }
     }
 }
+
+export const taskValidationSchema = {
+    title: {
+        trim: true,
+        notEmpty: {
+            errorMessage: "title must not be empty"
+        },
+        isString: {
+            errorMessage: "title must be a string"
+        }
+    },
+    description: {
+        trim: true,
+        notEmpty: {
+            errorMessage: "description must not be empty"
+        },
+        isString: {
+            errorMessage: "description must be a string"
+        }
+    },
+    dueDate: {
+        trim: true,
+        notEmpty: {
+            errorMessage: "Due date must not be empty"
+        },
+        isString: {
+            errorMessage: "Due date must be a string"
+        },
+        isDate: {
+            errorMessage: "Due date must be a date"
+        }
+    },
+    status: {
+        trim: true,
+        notEmpty: {
+            errorMessage: "Status must not be empty"
+        },
+        isString: {
+            errorMessage: "Status must be string"
+        }
+    }
+}
