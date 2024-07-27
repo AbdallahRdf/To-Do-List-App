@@ -33,3 +33,17 @@ export const deleteTask = async (req, res) => {
         console.log(error.message);
     }
 }
+
+export const updateTask = async (req, res) => {
+    try {
+        const result = validationResult(req);
+        if (!result.isEmpty()) return res.status(400).send({ error: result.array() });
+        const data = matchedData(req);
+        const task = await Task.findById(req.params.id);
+        await task.updateOne({ ...data });
+        await task.save();
+        res.redirect('/tasks');
+    } catch (error) {
+        console.log(error.message);
+    }
+}

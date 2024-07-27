@@ -3,54 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Home</title>
 </head>
-<body>
-    <h3>Add more tasks</h3>
-    <form action="/tasks" method="post">
+<body class="bg-slate-100">
+    <h3 class="text-4xl text-center mt-5">Add more tasks</h3>
+    <form action="/tasks" method="post" class="flex justify-center mt-5">
         <div>
-            <label for="title">Title</label>
-            <input type="text" name="title" id="title">
+            <input type="text" name="title" id="title" required placeholder="New Task" class="rounded text-base border border-slate-500 py-1 px-4 me-1">
         </div>
-        <div><input type="submit" value="Save"></div>
+        <div><input type="submit" value="Save" class="rounded cursor-pointer bg-sky-600 hover:bg-sky-500 text-white py-1 px-4 text-lg ms-1 w-20"></div>
     </form>
-    <div>
+    <div class="flex flex-col w-2/5 m-auto mt-5">
         <% if (tasks.length > 0) { %>
             <% for(task of tasks){ %>
-                <div>
-                    <p><%= task.title %></p>
-                    <form action="/tasks/<%= task.id %>" method="post">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <input type="submit" value="Delete">
+                <div class="grid grid-cols-6 gap-4 my-2 pb-3 border-b border-slate-300">
+                    <form action="/tasks/<%= task.id %>" method="post" class="update_form col-span-3">
+                        <input type="hidden" name="_method" value="PUT">
+                        <input type="text" name="title" value="<%= task.title %>" disabled class="update_input bg-slate-100">
                     </form>
+                    <form action="/tasks/<%= task.id %>" method="post" class="col-end-6">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value="Delete" class="rounded cursor-pointer bg-red-600 hover:bg-red-500 text-white py-1 ps-3 pe-4 text-lg ms-1 w-20">
+                    </form>
+                    <button class="update_btn rounded cursor-pointer bg-green-600 hover:bg-green-500 text-white py-1 ps-3 pe-4 text-lg ms-1 w-20">Update</button>
                 </div>
             <% } %>
         <% } %>
     </div>
+
+    <script>
+        const forms = document.querySelectorAll(".update_form");
+        const updateBtns = document.querySelectorAll(".update_btn");
+        const updateInputs = document.querySelectorAll(".update_input");
+        const classes = ["rounded", "text-base", "border", "border-slate-500", "py-1", "px-4", "me-1"];
+        const classToRmove = "bg-slate-100";
+
+        // const disableInputs = () => {
+        //     updateInputs.forEach(input => input.disabled = true);
+        //     updateBtns.forEach(btn => btn.textContent = "Update");
+        // }
+
+        updateBtns.forEach(updateBtn => updateBtn.addEventListener("click", event => {
+            const updateBtn = event.target;
+                console.log(updateBtn.textContent);
+                const form = updateBtn.parentElement.firstElementChild;
+                const updateInput = form.children[1];
+                if(updateBtn.textContent === "Update"){
+                    console.log(updateInput.value);
+                    updateBtn.textContent = "Save";
+                    console.log("changed to " + updateBtn.textContent);
+                    updateInput.disabled = false;
+                    updateInput.focus();
+                    updateInput.classList.remove(classToRmove);
+                    updateInput.classList.add(...classes);
+                } else {
+                    console.log(updateInput.value);
+                    form.submit();
+                }
+            })
+        )
+
+    </script>
 </body>
 </html>
-
-<!-- <form action="/tasks" method="post">
-    <input type="hidden" name="_method" value="PUT">
-    <div>
-        <label for="title">Title</label>
-        <input type="text" name="title" id="title">
-    </div>
-    <div>
-        <label for="description">Description</label>
-        <textarea name="description" id="description"></textarea>
-    </div>
-    <div>
-        <label for="dueDate">Due Date</label>
-        <input type="date" name="dueDate" id="dueDate">
-    </div>
-    <div>
-        <label for="status">Status</label>
-        <select name="status" id="status">
-            <option value="done">Done</option>
-            <option value="doing">Doing</option>
-            <option value="todo">To-do</option>
-        </select>
-    </div>
-    <div><input type="submit" value="Save"></div>
-</form> -->

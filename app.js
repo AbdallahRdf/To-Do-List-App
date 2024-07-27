@@ -7,7 +7,7 @@ import passport from 'passport';
 import methodOverride from 'method-override';
 import './src/strategies/local-strategy.js';
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 const app = express();
 
