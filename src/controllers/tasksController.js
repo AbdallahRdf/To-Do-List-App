@@ -4,7 +4,7 @@ import { matchedData, validationResult } from 'express-validator';
 export const getTasks = async (req, res) => {
     try {
         const tasks = await Task.find();
-        res.render('index', { tasks });
+        res.render('index', { tasks, title: "Home | To-Do App" });
     } catch(error) {
         console.log(error.message);
     }

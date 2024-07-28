@@ -6,6 +6,8 @@ import MongoStore from 'connect-mongo';
 import passport from 'passport';
 import methodOverride from 'method-override';
 import './src/strategies/local-strategy.js';
+import cookieParser from 'cookie-parser';
+import flash from 'connect-flash';
 
 const port = process.env.PORT || 5000;
 
@@ -24,8 +26,10 @@ app.use(session({
     })
 }));
 
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }))

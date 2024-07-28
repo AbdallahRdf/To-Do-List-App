@@ -1,22 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
+<%- include('./partials/head.ejs') %>
+
 <body>
-    <form action="/login" method="post">
-        <div>
-            <label for="username">username</label>
-            <input type="text" name="username" id="username">
-        </div>
-        <div>
-            <label for="password">password</label>
-            <input type="password" name="password" id="password">
-        </div>
-        <div><input type="submit" value="Login"></div>
-    </form>
-    <div><a href="/signup">Sign up</a></div>
+    <div class="rounded border border-slate-400 flex flex-col items-center w-1/4 mx-auto mt-20 px-4 py-8">
+        <h2 class="text-3xl text-slate-600">Welcome back!</h2>
+        <% if (messages.error && messages.error.length > 0) { %>
+            <div class="bg-red-100 w-full border border-red-700 text-center rounded py-4 mt-2 text-red-700"><%= messages.error[0] %></div>
+        <% } %>
+        <form action="/login" method="post" class="w-full">
+            <div class="flex flex-col w-full my-3">
+                <label class="mb-1 ms-2 text-slate-600" for="username">Username</label>
+                <input class="rounded-full text-base border border-slate-500 py-2 px-4 me-1" type="text" name="username" placeholder="John Doe" id="username">
+                <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+                    <span class="text-red-500 text-sm ms-2 mt-1"><%= errorMessage.usernameError %></span>
+                <% } %>
+            </div>
+            <div class="flex flex-col w-full my-3">
+                <label class="mb-1 ms-2 text-slate-600" for="password">Password</label>
+                <input class="rounded-full text-base border border-slate-500 py-2 px-4 me-1" type="password" name="password" placeholder="password" id="password">
+                <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+                    <span class="text-red-500 text-sm ms-2 mt-1"><%= errorMessage.passwordError %></span>
+                <% } %>
+            </div>
+            <div class="flex flex-col w-full my-3"><input class="rounded-full cursor-pointer bg-sky-600 hover:bg-sky-500 text-white py-2 px-4 text-lg mt-3 w-full" type="submit" value="Login"></div>
+        </form>
+    </div>
+    <div class="mt-3">
+        <p class="text-slate-500 text-center">You don't have an account ?</p>
+        <a class="underline underline-offset-1 hover:underline-offset-4 text-blue-500 block text-center font-semibold text-lg" href="/signup">Sign up</a>
+    </div>
 </body>
 </html>

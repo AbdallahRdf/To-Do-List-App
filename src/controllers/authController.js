@@ -20,7 +20,15 @@ export const logout = (req, res) => {
 
 export const signup = async (req, res, next) => {
     const result = validationResult(req);
-    if (!result.isEmpty()) return res.status(400).send({ error: result.array() });
+    if (!result.isEmpty()){
+        const errors = result.array();
+        const errorMessage = {
+            usernameError: errors.find(item => item.path === "username")?.msg,
+            emailError: errors.find(item => item.path === "email")?.msg,
+            passwordError: errors.find(item => item.path === "password")?.msg
+        };
+        return res.status(400).render('signup', { errorMessage, title: "Signup | To-Do App" });
+    }
     const { username, email, password } = matchedData(req);
     const hashedPassword = await hashPassword(password);
     const newUser = new User({ username, email, password: hashedPassword });

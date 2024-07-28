@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Home</title>
-</head>
+<%- include('./partials/head.ejs') %>
+
 <body class="bg-slate-100">
     <h3 class="text-4xl text-center mt-5">Add more tasks</h3>
     <form action="/tasks" method="post" class="flex justify-center mt-5">
@@ -38,11 +32,6 @@
         const updateInputs = document.querySelectorAll(".update_input");
         const classes = ["rounded", "text-base", "border", "border-slate-500", "py-1", "px-4", "me-1"];
         const classToRmove = "bg-slate-100";
-
-        // const disableInputs = () => {
-        //     updateInputs.forEach(input => input.disabled = true);
-        //     updateBtns.forEach(btn => btn.textContent = "Update");
-        // }
 
         updateBtns.forEach(updateBtn => updateBtn.addEventListener("click", event => {
             const updateBtn = event.target;
