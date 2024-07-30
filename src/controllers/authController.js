@@ -41,14 +41,29 @@ export const signup = async (req, res, next) => {
         return res.status(400).render('signup', { errorMessage, title: "Signup | To-Do App" });
     }
     const { username, email, password } = matchedData(req);
-    const hashedPassword = await hashPassword(password);
-    const newUser = new User({ username, email, password: hashedPassword });
+
     try {
+        const usersWithSameUsername = await User.find({username});
+        if(usersWithSameUsername.length > 0){
+            return res.status(400).render('signup', { errorMessage: {usernameError: 'username is already taken!'}, title: "Signup | To-Do App" });
+        }
+        const usersWithSameEmail = await User.find({email});
+        if(usersWithSameEmail.length > 0){
+            return res.status(400).render('signup', { errorMessage: {emailError: 'There is already an account with that Email'}, title: "Signup | To-Do App" });
+        }
+    
+        const hashedPassword = await hashPassword(password);
+        const newUser = new User({ username, email, password: hashedPassword });
+        
         await newUser.save();
         next();
     } catch (error) {
-        log(error.message);
-        res.status(500).send({ msg: 'Error while creating the user account' });
+        log(error);
+        return res.status(500).render('errorPage', {
+            code: 500,
+            message: 'Error while creating the user account' ,
+            title: "Server Error"
+        });
     }
 }
 
