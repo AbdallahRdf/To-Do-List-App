@@ -3,7 +3,7 @@ import { matchedData, validationResult } from 'express-validator';
 
 export const getTasks = async (req, res) => {
     try {
-        const tasks = await Task.find();
+        const tasks = await Task.find({ owner: req.user.id });
         res.render('index', { tasks, title: "Home | To-Do App" });
     } catch(error) {
         console.log(error.message);
@@ -37,11 +37,12 @@ export const deleteTask = async (req, res) => {
 export const updateTask = async (req, res) => {
     try {
         const result = validationResult(req);
-        if (!result.isEmpty()) return res.status(400).send({ error: result.array() });
-        const data = matchedData(req);
-        const task = await Task.findById(req.params.id);
-        await task.updateOne({ ...data });
-        await task.save();
+        if (result.isEmpty()){
+            const data = matchedData(req);
+            const task = await Task.findById(req.params.id);
+            await task.updateOne({ ...data });
+            await task.save();
+        }
         res.redirect('/tasks');
     } catch (error) {
         console.log(error.message);

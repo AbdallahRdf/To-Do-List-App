@@ -3,8 +3,8 @@
 <body>
     <div class="rounded border border-slate-400 flex flex-col items-center w-1/4 mx-auto mt-20 px-4 py-8">
         <h2 class="text-3xl text-slate-600">Welcome back!</h2>
-        <% if (messages.error && messages.error.length > 0) { %>
-            <div class="bg-red-100 w-full border border-red-700 text-center rounded py-4 mt-2 text-red-700"><%= messages.error[0] %></div>
+        <% if (typeof message !== 'undefined' && message.error && message.error.length > 0) { %>
+            <div class="bg-red-100 w-full border border-red-700 text-center rounded py-4 mt-2 text-red-700"><%= message.error[0] %></div>
         <% } %>
         <form action="/login" method="post" class="w-full">
             <div class="flex flex-col w-full my-3">
@@ -20,8 +20,9 @@
                 <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
                     <span class="text-red-500 text-sm ms-2 mt-1"><%= errorMessage.passwordError %></span>
                 <% } %>
+                <a class="underline underline-offset-1 hover:underline-offset-4 text-blue-500 block text-sm ms-3 mt-1" href="/forgot_password">Forgot your password ?</a>
             </div>
-            <div class="flex flex-col w-full my-3"><input class="rounded-full cursor-pointer bg-sky-600 hover:bg-sky-500 text-white py-2 px-4 text-lg mt-3 w-full" type="submit" value="Login"></div>
+            <div class="flex flex-col w-full my-3"><input class="rounded-full cursor-pointer bg-sky-600 hover:bg-sky-500 text-white py-2 px-4 text-lg mt-2 w-full" type="submit" value="Login"></div>
         </form>
     </div>
     <div class="mt-3">

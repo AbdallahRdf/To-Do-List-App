@@ -1,6 +1,9 @@
 <%- include('./partials/head.ejs') %>
 
 <body class="bg-slate-100">
+
+    <a class="rounded-full bg-white hover:bg-gray-50 text-slate-700 py-2 ps-3 pe-3 text-lg w-24 border border-slate-300 cursor-pointer absolute top-0.5 right-0.5 text-center" href="/logout">Logout</a>
+
     <h3 class="text-4xl text-center mt-5">Add more tasks</h3>
     <form action="/tasks" method="post" class="flex justify-center mt-5">
         <div>
@@ -8,7 +11,8 @@
         </div>
         <div><input type="submit" value="Save" class="rounded cursor-pointer bg-sky-600 hover:bg-sky-500 text-white py-1 px-4 text-lg ms-1 w-20"></div>
     </form>
-    <div class="flex flex-col w-2/5 m-auto mt-5">
+
+    <div class="flex flex-col w-2/5 m-auto mt-5">   
         <% if (tasks.length > 0) { %>
             <% for(task of tasks){ %>
                 <div class="grid grid-cols-6 gap-4 my-2 pb-3 border-b border-slate-300">

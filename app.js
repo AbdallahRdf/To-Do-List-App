@@ -5,9 +5,9 @@ import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
 import methodOverride from 'method-override';
-import './src/strategies/local-strategy.js';
 import cookieParser from 'cookie-parser';
 import flash from 'connect-flash';
+import './src/strategies/local-strategy.js';
 
 const port = process.env.PORT || 5000;
 

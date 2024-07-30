@@ -1,0 +1,11 @@
+<%- include('./partials/head.ejs') %>
+
+<body>
+    <div class="flex flex-col justify-center items-center bg-slate-100 h-screen">
+        <div class="bg-white text-center rounded px-10 py-8 border border-slate-400">
+            <p class="text-9xl mb-4 font-mono font-bold text-slate-700"><%= code %></p>
+            <p class="text-3xl font-light font-mono text-slate-700"><%= message.toUpperCase() %></p>
+            <a href="/tasks" class="inline-block rounded-full px-6 py-3 mt-5 bg-slate-500 hover:bg-slate-400 text-white text-lg">Back To Home</a>
+        </div>
+    </div>
+</body>
