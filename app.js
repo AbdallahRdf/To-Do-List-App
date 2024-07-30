@@ -21,6 +21,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     saveUninitialized: false,
     resave: false,
+    unset: 'destroy',
     store: MongoStore.create({
         client: mongoose.connection.getClient()
     })

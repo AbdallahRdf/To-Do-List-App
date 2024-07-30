@@ -7,6 +7,13 @@ import { handleLoginValidationResult } from '../middleware/handleLoginValidtionR
 
 const router = new Router();
 
+// Prevent browser caching
+router.use((req, res, next) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+    next();
+});
 
 // router.use((req, res, next) => {
 //     if(req.user) return res.redirect("/");

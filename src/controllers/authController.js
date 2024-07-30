@@ -19,8 +19,10 @@ export const logout = (req, res) => {
 
             res.clearCookie('connect.sid', { path: '/' });
 
+            // Disable caching for the current response
             res.set('Cache-Control', 'no-store');
             res.set('Pragma', 'no-cache');
+            res.set('Expires', '0');
 
             res.redirect('/login');
         });
