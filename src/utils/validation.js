@@ -56,10 +56,31 @@ export const taskValidationSchema = {
     title: {
         trim: true,
         notEmpty: {
-            errorMessage: "title must not be empty"
+            errorMessage: "Title must not be empty"
         },
         isString: {
-            errorMessage: "title must be a string"
+            errorMessage: "Title must be a string"
+        }
+    }
+}
+
+export const updateTaskValidationSchema = {
+    title: {
+        trim: true,
+        notEmpty: {
+            errorMessage: "Title must not be empty"
+        },
+        isString: {
+            errorMessage: "Title must be a string"
+        }
+    },
+    status: {
+        trim: true,
+        notEmpty: {
+            errorMessage: "Status must not be empty"
+        },
+        isString: {
+            errorMessage: "Status must be a string"
         }
     }
 }

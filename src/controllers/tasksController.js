@@ -4,7 +4,7 @@ import { matchedData, validationResult } from 'express-validator';
 export const getTasks = async (req, res) => {
     try {
         const tasks = await Task.find({ owner: req.user.id });
-        res.render('index', { tasks, title: "Home | To-Do App" });
+        return res.render('index', { tasks, title: "Home | To-Do App" });
     } catch(error) {
         console.log(error.message);
     }
@@ -34,16 +34,28 @@ export const deleteTask = async (req, res) => {
     }
 }
 
-export const updateTask = async (req, res) => {
+export const updateTask = async (req, res, ) => {
     try {
         const result = validationResult(req);
-        if (result.isEmpty()){
-            const data = matchedData(req);
-            const task = await Task.findById(req.params.id);
-            await task.updateOne({ ...data });
-            await task.save();
+        if(!result.isEmpty()){
+            const tasks = await Task.find({ owner: req.user.id });
+            const errors = result.array();
+            const errorMessage = {
+                titleError: errors.find(item => item.path === "title")?.msg,
+                statusError: errors.find(item => item.path === "status")?.msg,
+            }
+            return res.render('index', {
+                title: "Home | To-Do App",
+                errorMessage,
+                tasks,
+                taskId: req.params.id // id of task that is getting updated;
+            })
         }
-        res.redirect('/tasks');
+        const data = matchedData(req);
+        const task = await Task.findById(req.params.id);
+        await task.updateOne({ ...data });
+        await task.save();
+        res.redirect("/tasks");
     } catch (error) {
         console.log(error.message);
     }

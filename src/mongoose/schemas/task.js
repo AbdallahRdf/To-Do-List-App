@@ -5,6 +5,11 @@ const taskSchema = new mongoose.Schema({
         type: mongoose.SchemaTypes.String,
         required: true,
     },
+    status: {
+        type: mongoose.SchemaTypes.String,
+        enum: ['Pending', 'In Progress', 'Completed', 'On Hold', 'Cancelled'],
+        default: "Pending"
+    },
     owner: mongoose.SchemaTypes.ObjectId,
 })
 

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { checkSchema } from 'express-validator';
-import { taskValidationSchema } from '../utils/validation.js';
+import { taskValidationSchema, updateTaskValidationSchema } from '../utils/validation.js';
 import { createTask, deleteTask, getTasks, updateTask } from '../controllers/tasksController.js';
 
 const router = new Router();
@@ -18,6 +18,6 @@ router.post('/tasks', checkSchema(taskValidationSchema), createTask);
 
 router.delete('/tasks/:id', deleteTask);
 
-router.put('/tasks/:id', checkSchema(taskValidationSchema), updateTask);
+router.put('/tasks/:id', checkSchema(updateTaskValidationSchema), updateTask);
 
 export default router;

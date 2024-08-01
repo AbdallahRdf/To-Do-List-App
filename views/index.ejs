@@ -12,51 +12,141 @@
         <div><input type="submit" value="Save" class="rounded cursor-pointer bg-sky-600 hover:bg-sky-500 text-white py-1 px-4 text-lg ms-1 w-20"></div>
     </form>
 
-    <div class="flex flex-col w-2/5 m-auto mt-5">   
-        <% if (tasks.length > 0) { %>
-            <% for(task of tasks){ %>
-                <div class="grid grid-cols-6 gap-4 my-2 pb-3 border-b border-slate-300">
-                    <form action="/tasks/<%= task.id %>" method="post" class="update_form col-span-3">
-                        <input type="hidden" name="_method" value="PUT">
-                        <input type="text" name="title" value="<%= task.title %>" disabled class="update_input bg-slate-100">
-                    </form>
-                    <form action="/tasks/<%= task.id %>" method="post" class="col-end-6">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <input type="submit" value="Delete" class="rounded cursor-pointer bg-red-600 hover:bg-red-500 text-white py-1 ps-3 pe-4 text-lg ms-1 w-20">
-                    </form>
-                    <button class="update_btn rounded cursor-pointer bg-green-600 hover:bg-green-500 text-white py-1 ps-3 pe-4 text-lg ms-1 w-20">Update</button>
-                </div>
-            <% } %>
-        <% } %>
+    <!-- table to show tasks -->
+    <div class="flex flex-col w-1/2 m-auto mt-6">   
+        <table class="table-auto border-collapse border border-slate-400">
+            <thead class="bg-slate-300">
+                <tr class="border border-slate-400">
+                    <th class="py-3">Title</th>
+                    <th class="py-3">Status</th>
+                    <th class="py-3">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="bg-slate-50">
+                <% if (tasks.length > 0) { %>
+                    <% for(task of tasks){ %>
+                        <% 
+                            let bgColor = 'bg-purple-600'; // for 'Pending' status
+                            switch (task.status) {
+                                case 'In Progress':
+                                    bgColor = 'bg-blue-600'
+                                    break;
+                                case 'Completed':
+                                    bgColor = 'bg-green-600'
+                                    break;
+                                case 'On Hold':
+                                    bgColor = 'bg-yellow-500'
+                                    break;
+                                case 'Cancelled':
+                                    bgColor = 'bg-red-500'
+                                    break;
+                            }    
+                        %>
+                        <tr class="border border-slate-400 text-center hover:bg-slate-100">
+                            <td class="py-3"><%= task.title %></td>
+                            <td class="py-3">
+                                <button disabled class="<%= bgColor %> rounded-full text-white py-1 ps-3 pe-4 text-lg ms-1"><%= task.status %></button>
+                            </td>
+                            <td class="py-3">
+                                <!-- <button class="rounded-full cursor-pointer border border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white py-1 ps-3 pe-4 text-lg ms-1 w-20">Info</button> -->
+                                <button data-id="<%= task.id %>" class="updateBtn rounded-full cursor-pointer border border-green-600 text-green-600 hover:bg-green-600 hover:text-white py-1 ps-3 pe-4 text-lg ms-1 w-20">Update</button>
+                                <!-- delete form -->
+                                 <form action="/tasks/<%= task.id %>" method="post" class="deleteForm inline">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <input type="submit" value="Delete" class="rounded-full cursor-pointer border border-red-600 text-red-600 hover:bg-red-600 hover:text-white py-1 ps-3 pe-4 text-lg ms-1 w-20">
+                                 </form>
+                            </td>
+                        </tr>
+                    <% } %>
+                <% } else { %>
+                    <tr class="border border-slate-400 text-center">
+                        <td colspan="3" class="py-5 text-xl">
+                            No tasks to show
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+        <% const status = ['Pending', 'In Progress', 'Completed', 'On Hold', 'Cancelled']; %>
+    </div>
+
+    <!-- update form -->
+     <% const isThereErrors = (typeof errorMessage !== 'undefined' && errorMessage) %>
+    <div id="overlay" class="<%= isThereErrors ? '' : 'hidden' %> bg-black opacity-40 h-screen absolute top-0 left-0 right-0"></div>
+    <div id="updateFormContainer" class="<%= isThereErrors ? '' : 'hidden' %>  absolute top-0 left-0 right-0 h-screen flex justify-center flex items-center">
+        <form id="updateForm" action="/tasks<%= isThereErrors ? `/${taskId}` : '' %>" method="post" class="opacity-100 absolute w-1/3 border border-slate-300 rounded bg-slate-50 py-4 px-8">
+            <p class="text-4xl text-center text-slate-700">Update task</p>
+            <input type="hidden" name="_method" value="PUT">
+            <div class="flex flex-col my-3">
+                <label for="title" class="ms-3 text-xl text-slate-700">Title</label>
+                <input type="text" name="title" id="updateTitle" class="rounded-full text-base border border-slate-500 py-2 px-4">
+                <% if (isThereErrors) { %>
+                    <span class="errorMessage text-red-500 text-sm ms-2 mt-1"><%= errorMessage.titleError %></span>
+                <% } %>
+            </div>
+            <div class="flex flex-col my-3">
+                <label for="status" class="ms-3 text-xl text-slate-700">Status</label>
+                <select name="status" id="status" class="bg-slate-50 border border-slate-400 py-2 px-4 rounded-full">
+                    <% for( let i = 0; i < status.length; i++ ) { %>
+                        <option value="<%=status[i]%>"><%=status[i]%></option>
+                    <% } %>
+                </select>
+                <% if (isThereErrors) { %>
+                    <span class="errorMessage text-red-500 text-sm ms-2 mt-1"><%= errorMessage.statusError %></span>
+                <% } %>
+            </div>
+            <div class="flex justify-end mt-6">
+                <button class="rounded-full cursor-pointer bg-gray-600 hover:bg-gray-500 text-white py-1 px-5 mx-3 text-lg" id="cancelBtn" type="button">Cancel</button>
+                <input class="rounded-full cursor-pointer bg-sky-600 hover:bg-sky-500 text-white py-1 px-5 text-lg" type="submit" value="Update">
+            </div>
+        </form>
     </div>
 
     <script>
-        const forms = document.querySelectorAll(".update_form");
-        const updateBtns = document.querySelectorAll(".update_btn");
-        const updateInputs = document.querySelectorAll(".update_input");
-        const classes = ["rounded", "text-base", "border", "border-slate-500", "py-1", "px-4", "me-1"];
-        const classToRmove = "bg-slate-100";
+        const deleteFoms = document.querySelectorAll(".deleteForm");
+        const updateBtns = document.querySelectorAll(".updateBtn");
+        const updateForm = document.querySelector("#updateForm");
+        const updateFormContainer = document.querySelector("#updateFormContainer");
+        const cancelBtn = document.querySelector("#cancelBtn");
+        const overlay = document.querySelector("#overlay");
+        const errorMessages = document.querySelectorAll(".errorMessage");
+        const titleInput = document.querySelector("#updateTitle");
+        const statusInput = document.querySelector("#status");
 
-        updateBtns.forEach(updateBtn => updateBtn.addEventListener("click", event => {
-            const updateBtn = event.target;
-                console.log(updateBtn.textContent);
-                const form = updateBtn.parentElement.firstElementChild;
-                const updateInput = form.children[1];
-                if(updateBtn.textContent === "Update"){
-                    console.log(updateInput.value);
-                    updateBtn.textContent = "Save";
-                    console.log("changed to " + updateBtn.textContent);
-                    updateInput.disabled = false;
-                    updateInput.focus();
-                    updateInput.classList.remove(classToRmove);
-                    updateInput.classList.add(...classes);
-                } else {
-                    console.log(updateInput.value);
-                    form.submit();
+        deleteFoms.forEach(deleteFom => {
+            deleteFom.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const answer = confirm("Are you sure you want to delete this task ?");
+                if(answer) deleteFom.submit();
+            })
+        })
+
+        updateBtns.forEach(updateBtn => {
+            updateBtn.addEventListener("click", () => {
+                const taskId = updateBtn.dataset.id;
+                updateForm.action += `/${taskId}`;
+                overlay.classList.remove('hidden');
+                updateFormContainer.classList.remove('hidden');
+                errorMessages.forEach(errorMessage => errorMessage.classList.add("hidden"))
+
+                const actionsTD = updateBtn.parentElement;
+                const row = actionsTD.parentElement;
+                titleInput.value = row.children[0].textContent;
+                const statusValue = row.children[1].children[0].textContent;
+                for(let i = 0; i < statusInput.options.length; i++){
+                    if(statusInput.options[i].value === statusValue){
+                        statusInput.options[i].selected = true;
+                        break;
+                    }
                 }
             })
-        )
-
+        })   
+        
+        cancelBtn.addEventListener("click", () => {
+            updateForm.action = `/tasks`;
+            overlay.classList.add('hidden');
+            updateFormContainer.classList.add('hidden');
+        })
     </script>
 </body>
 </html>
