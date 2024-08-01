@@ -10,6 +10,12 @@ const router = new Router();
 // });
 
 router.use(authRouter);
-router.use(tasksRouter)
+router.use(tasksRouter);
+
+router.use((req, res) => res.render('errorPage', {
+    code: 404,
+    message: 'Not Found',
+    title: "not found"
+}));
 
 export default router;

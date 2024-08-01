@@ -4,6 +4,11 @@ import { matchedData, validationResult } from 'express-validator';
 export const getTasks = async (req, res) => {
     try {
         const tasks = await Task.find({ owner: req.user.id });
+        if(req.session.updateErrors){
+            const options = req.session.updateErrors;
+            delete req.session.updateErrors;
+            return res.render('index', {tasks, ...options});
+        }
         return res.render('index', { tasks, title: "Home | To-Do App" });
     } catch(error) {
         console.log(error.message);
@@ -34,22 +39,21 @@ export const deleteTask = async (req, res) => {
     }
 }
 
-export const updateTask = async (req, res, ) => {
+export const updateTask = async (req, res) => {
     try {
         const result = validationResult(req);
         if(!result.isEmpty()){
-            const tasks = await Task.find({ owner: req.user.id });
             const errors = result.array();
             const errorMessage = {
                 titleError: errors.find(item => item.path === "title")?.msg,
                 statusError: errors.find(item => item.path === "status")?.msg,
             }
-            return res.render('index', {
+            req.session.updateErrors = {
                 title: "Home | To-Do App",
                 errorMessage,
-                tasks,
                 taskId: req.params.id // id of task that is getting updated;
-            })
+            }
+            return res.redirect('/tasks');
         }
         const data = matchedData(req);
         const task = await Task.findById(req.params.id);
