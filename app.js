@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'node:path';
 import routes from './src/routes/routes.js';
 import mongoose from 'mongoose';
 import session from 'express-session';
@@ -12,6 +13,8 @@ import './src/strategies/local-strategy.js';
 const port = process.env.PORT || 5000;
 
 const app = express();
+
+app.use(express.static(path.join(import.meta.dirname, 'public')));
 
 mongoose.connect("mongodb://localhost:27017/todo_app_db")
     .then(() => console.log("connected to the db"))

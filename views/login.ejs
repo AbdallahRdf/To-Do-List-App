@@ -14,9 +14,12 @@
                     <span class="text-red-500 text-sm ms-2 mt-1"><%= errorMessage.usernameError %></span>
                 <% } %>
             </div>
-            <div class="flex flex-col w-full my-3">
+            <div class="flex flex-col w-full my-3 relative">
                 <label class="mb-1 ms-2 text-slate-600" for="password">Password</label>
                 <input class="rounded-full text-base border border-slate-500 py-2 px-4 me-1" type="password" name="password" placeholder="password" id="password">
+                <button type="button" id="showPasswordBtn" class="absolute top-9 right-4">
+                    <img src="/img/icons8-eye-48.png" width="22" alt="show password" title="show password">
+                </button>
                 <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
                     <span class="text-red-500 text-sm ms-2 mt-1"><%= errorMessage.passwordError %></span>
                 <% } %>
@@ -29,5 +32,11 @@
         <p class="text-slate-500 text-center">You don't have an account ?</p>
         <a class="underline underline-offset-1 hover:underline-offset-4 text-blue-500 block text-center font-semibold text-lg" href="/signup">Sign up</a>
     </div>
+
+    <script>
+        const passwordInput = document.querySelector("#password");
+
+        document.querySelector("#showPasswordBtn").addEventListener("click", () => passwordInput.type = (passwordInput.type === "password") ? "text" : "password")
+    </script>
 </body>
 </html>

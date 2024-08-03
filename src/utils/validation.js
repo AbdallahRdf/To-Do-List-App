@@ -49,6 +49,21 @@ export const signupValidationSchema = {
         isString: {
             errorMessage: "password must be a string"
         }
+    },
+    confirmPassword: {
+        trim: true,
+        notEmpty: {
+            errorMessage: "password confirmation must not be empty"
+        },
+        isString: {
+            errorMessage: "password must be a string"
+        },
+        custom: {
+            options: (value, { req }) => {
+                if(value !== req.body.password) throw new Error('Password confirmation does not match password');
+                return true;
+            }
+        }
     }
 }
 

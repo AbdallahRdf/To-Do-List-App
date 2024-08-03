@@ -36,7 +36,8 @@ export const signup = async (req, res, next) => {
         const errorMessage = {
             usernameError: errors.find(item => item.path === "username")?.msg,
             emailError: errors.find(item => item.path === "email")?.msg,
-            passwordError: errors.find(item => item.path === "password")?.msg
+            passwordError: errors.find(item => item.path === "password")?.msg,
+            confirmPasswordError: errors.find(item => item.path === "confirmPassword")?.msg
         };
         return res.status(400).render('signup', { errorMessage, title: "Signup | To-Do App" });
     }
