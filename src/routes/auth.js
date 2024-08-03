@@ -4,16 +4,12 @@ import { checkSchema } from 'express-validator';
 import { emailValidationSchema, loginValidationSchema, resetPasswordValidationSchema, signupValidationSchema } from '../utils/validation.js';
 import { emailForgotten, getResetPasswordPage, logout, resetPassword, signup } from '../controllers/authController.js';
 import { handleLoginValidationResult } from '../middleware/handleLoginValidtionResult.js';
+import {noBrowserCache} from '../middleware/noBrowserCache.js';
 
 const router = new Router();
 
 // Prevent browser caching
-router.use((req, res, next) => {
-    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
-    res.set('Pragma', 'no-cache');
-    res.set('Expires', '0');
-    next();
-});
+router.use(noBrowserCache);
 
 // router.use((req, res, next) => {
 //     if(req.user) return res.redirect("/");

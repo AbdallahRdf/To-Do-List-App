@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import authRouter from './auth.js';
 import tasksRouter from './tasks.js';
+import userRouter from './user.js';
 
 const router = new Router();
 
@@ -11,6 +12,7 @@ const router = new Router();
 
 router.use(authRouter);
 router.use(tasksRouter);
+router.use(userRouter);
 
 router.use((req, res) => res.render('errorPage', {
     code: 404,
