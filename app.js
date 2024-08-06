@@ -17,7 +17,7 @@ const app = express();
 
 app.use(express.static(path.join(import.meta.dirname, 'public')));
 
-mongoose.connect("mongodb://localhost:27017/todo_app_db")
+mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log("connected to the db"))
     .catch(error => console.log(error.message));
 
