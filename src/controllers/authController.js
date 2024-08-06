@@ -139,7 +139,7 @@ export const resetPassword = async (req, res) => {
             passwordError: errors.find(item => item.path === "password")?.msg,
             confirmPasswordError: errors.find(item => item.path === "confirmPassword")?.msg
         }
-        return res.send(400).render('resetPassword', { 
+        return res.status(400).render('resetPassword', { 
             token: req.params.token, 
             title: "Reset Password | To-Do App",
             errorMessage
