@@ -28,7 +28,7 @@
     </div>
 
     <!-- add new task -->
-    <h3 class="text-4xl text-center mt-5">Add more tasks</h3>
+    <h3 class="text-4xl text-center mt-20 md:mt-5">Add more tasks</h3>
     <form action="/tasks" method="post" class="flex justify-center mt-5">
         <div>
             <input type="text" name="title" id="title" required placeholder="New Task" class="rounded text-base border border-slate-500 py-1 px-4 me-1">
@@ -39,8 +39,8 @@
     </form>
 
     <!-- table to show tasks -->
-    <div class="flex flex-col w-1/2 m-auto mt-6">
-        <table class="table-auto border-collapse border border-slate-400">
+    <div class="flex flex-col w-5/6 md:w-2/3 lg:w-1/2 m-auto mt-6">
+        <table class="table-auto border-collapse border border-slate-400 overflow-auto">
             <thead class="bg-slate-300">
                 <tr class="border border-slate-400">
                     <th class="py-3">Title</th>
@@ -97,13 +97,11 @@
 
     <!-- update form -->
     <% const isThereErrors=(typeof errorMessage !=='undefined' && errorMessage) %>
-    <div id="overlay"
-        class="<%= isThereErrors ? '' : 'hidden' %> bg-black opacity-40 h-screen absolute top-0 left-0 right-0">
+    <div id="overlay" class="<%= isThereErrors ? '' : 'hidden' %> bg-black opacity-40 h-screen w-screen absolute top-0 left-0 right-0 bottom-0">
     </div>
-    <div id="updateFormContainer"
-        class="<%= isThereErrors ? '' : 'hidden' %>  absolute top-0 left-0 right-0 h-screen flex justify-center flex items-center">
-        <form id="updateForm" action="/tasks<%= isThereErrors ? `/${taskId}` : '' %>" method="post"
-            class="opacity-100 absolute w-1/3 border border-slate-300 rounded bg-slate-50 py-4 px-8">
+
+    <div id="updateFormContainer" class="<%= isThereErrors ? '' : 'hidden' %>  absolute top-0 left-0 right-0 h-screen flex justify-center flex items-center">
+        <form id="updateForm" action="/tasks<%= isThereErrors ? `/${taskId}` : '' %>" method="post" class="opacity-100 absolute  w-5/6 md:w-2/3 lg:w-1/3 border border-slate-300 rounded bg-slate-50 py-4 px-8">
             <p class="text-4xl text-center text-slate-700">Update task</p>
             <input type="hidden" name="_method" value="PUT">
             <div class="flex flex-col my-3">
@@ -209,6 +207,9 @@
                         break;
                     }
                 }
+
+                body.classList.add('overflow-hidden');
+                body.classList.add('h-full');
             })
         })
 
@@ -216,6 +217,8 @@
             updateForm.action = `/tasks`;
             overlay.classList.add('hidden');
             updateFormContainer.classList.add('hidden');
+            body.classList.remove('overflow-hidden');
+            body.classList.remove('h-full');
         })
     </script>
 </body>

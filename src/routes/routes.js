@@ -11,6 +11,12 @@ const router = new Router();
 // });
 
 router.use(authRouter);
+
+router.use((req, res, next) => {
+    if(!req.user) return res.redirect("/login");
+    next();
+})
+
 router.use(tasksRouter);
 router.use(userRouter);
 

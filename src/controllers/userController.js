@@ -49,7 +49,7 @@ export const deleteUser = async (req, res) => {
 
 export const updateUserProfileImage = async (req, res) => {
     try {
-        if(!["image/jpeg", "image/png"].includes(req.file.mimetype)){
+        if(!["image/jpeg", "image/png"].includes(req.file?.mimetype)){
             return res.redirect(`/user?fileError=Only image files are allowed!`);
         }
 

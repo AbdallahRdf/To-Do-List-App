@@ -5,11 +5,6 @@ import { createTask, deleteTask, getTasks, updateTask } from '../controllers/tas
 
 const router = new Router();
 
-router.use((req, res, next) => {
-    if(!req.user) return res.redirect("/login");
-    next();
-})
-
 router.get('/', (req, res) => res.redirect("/tasks"))
 
 router.get('/tasks', getTasks);
