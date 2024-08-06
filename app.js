@@ -9,6 +9,7 @@ import methodOverride from 'method-override';
 import cookieParser from 'cookie-parser';
 import flash from 'connect-flash';
 import './src/strategies/local-strategy.js';
+import multer from 'multer';
 
 const port = process.env.PORT || 5000;
 
@@ -36,13 +37,19 @@ app.use(passport.session());
 app.use(flash());
 
 app.set("view engine", "ejs");
-app.use(express.urlencoded({ extended: true }))
-app.use(methodOverride(function (req, res) {
+app.use(express.urlencoded({ extended: true }));
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+app.use(upload.single("image"));
+
+app.use(methodOverride(function (req, res) {   
     if (req.body && typeof req.body === 'object' && '_method' in req.body) {
-      // look in urlencoded POST bodies and delete it
-      const method = req.body._method
-      delete req.body._method
-      return method
+        // look in urlencoded POST bodies and delete it
+        const method = req.body._method
+        delete req.body._method
+        return method
     }
 }));
 

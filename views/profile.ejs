@@ -5,16 +5,35 @@
         <img width="38" height="38" src="https://img.icons8.com/fluency/48/circled-left-2--v1.png" alt="go back"/>
     </a>
 
-    <main class="bg-white border border-slate-300 rounded w-1/3 py-8 text-slate-800 text-lg mx-auto mt-28 flex flex-col items-center">
+    <main class="bg-white border border-slate-300 rounded w-1/3 pb-8 text-slate-800 text-lg mx-auto mt-28 flex flex-col items-center">
         <div class="w-full">
-            <h3 class="text-4xl mb-8 ms-2">Profile</h3>
-            <div class="border-b border-slate-300 mb-4 pb-3 mx-4 flex">
-                <p>username:</p>
-                <p class="text-slate-600 ms-24"><%= user.username %></p>
+            <!-- <h3 class="text-6xl font-serif mt-6 text-center">Profile</h3> -->
+            <% if (user.image && user.image.data) { %>
+                <div class="relative flex justify-center my-8 w-56 h-56 mx-auto">
+                    <img src="/user/<%= user.id %>/image" alt="profile image" class="rounded-full">
+                    <button id="updateImgaeBtn" class="absolute bottom-6 right-1 bg-white rounded-full p-1 border border-slate-300">
+                        <img src="/img/image-pen-svgrepo-com.svg" alt="change picture icon"> 
+                    </button>
+                </div>
+            <% } else { %>
+                <div class="relative flex justify-center my-4 w-56 h-56 mx-auto">
+                    <img src="/img/user-image.svg" alt="profile image">
+                    <button id="updateImgaeBtn" class="absolute bottom-8 right-6 bg-white rounded-full p-1 border border-slate-300">
+                        <img src="/img/image-pen-svgrepo-com.svg" alt="change picture icon"> 
+                    </button>
+                </div>
+            <% } %>       
+            <div class="border-b border-slate-300 mb-4 pb-3 mx-4 grid grid-cols-2">
+                <p>Username:</p>
+                <p class="text-slate-600"><%= user.username %></p>
             </div>
-            <div class="border-b border-slate-300 mb-4 pb-3 mx-4 flex">
-                <p>Email:</p>
-                <p class="text-slate-600 ms-28"><%= user.email %></p>
+            <div class="border-b border-slate-300 mb-4 pb-3 mx-4 grid grid-cols-2">
+                <p>Full Name:</p>
+                <p class="text-slate-600"><%= user.fullName %></p>
+            </div>
+            <div class="border-b border-slate-300 mb-4 pb-3 mx-4 grid grid-cols-2">
+                <p>Email Address:</p>
+                <p class="text-slate-600"><%= user.email %></p>
             </div>
         </div>
         <form id="deleteAccountForm" action="/user/<%= user.id %>" method="post" class="w-full px-4">
@@ -23,7 +42,34 @@
         </form>
     </main>
 
+    <% 
+        const condition = (typeof fileError === 'undefined');        
+    %>
+
+    <!-- overlay -->
+    <div id="overlay" class="<%= condition ? 'hidden' : '' %> bg-slate-900 opacity-40 absolute top-0 right-0 bottom-0 left-0"></div>
+
+    <!-- choose image form -->
+     <div id="updateImgForm" class="<%= condition ? 'hidden' : '' %> absolute top-0 right-0 bottom-0 left-0 flex justify-center items-center">
+        <form action="/user/<%= user.id %>" method="post" enctype="multipart/form-data" class="border border-slate-300 rounded w-1/3 bg-white ps-4">
+            <h3 class="text-slate-700 text-4xl text-center my-4">Update Profile Image</h3>
+            <input type="hidden" name="_method" value="PATCH">
+            <div class="my-4">
+                <label for="image" class="text-lg text-slate-600 me-2">Choose profile image</label>
+                <input type="file" name="image" id="image">
+                <% if (!condition) { %>
+                    <span class="text-red-500 text-sm ms-2 mt-1 block"><%= fileError %></span>
+                <% } %>
+            </div>
+            <div class="flex justify-end mx-4 mb-4 gap-x-2">
+                <button type="button" id="cancelBtn" class="text-lg border border-slate-300 py-2 px-8 rounded-full bg-slate-500 text-white hover:bg-slate-400 cursor-pointer">Cancel</button>
+                <input type="submit" value="Save" class="text-lg border border-slate-300 py-2 px-8 rounded-full bg-blue-600 text-white hover:bg-blue-500 cursor-pointer">
+            </div>
+        </form>
+     </div>
+
     <script>
+        // delete account code
         const form = document.querySelector('#deleteAccountForm');
 
         form.addEventListener("submit", e => {
@@ -31,7 +77,24 @@
             const response = confirm('Are you sure you want to delete you Account ?');
             console.log(response);
             if(response) form.submit();
+        });
+
+        // update profile image
+        const updateImgBtn = document.querySelector("#updateImgaeBtn");
+        const cancelBtn = document.querySelector("#cancelBtn");
+        const overlay = document.querySelector("#overlay");
+        const updateImgForm = document.querySelector("#updateImgForm");
+        
+        updateImgBtn.addEventListener("click", () => {
+            overlay.classList.remove("hidden");
+            updateImgForm.classList.remove("hidden");
         })
+
+        cancelBtn.addEventListener("click", () => {
+            overlay.classList.add("hidden");
+            updateImgForm.classList.add("hidden");
+        })
+
     </script>
 </body>
 

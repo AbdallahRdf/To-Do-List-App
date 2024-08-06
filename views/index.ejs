@@ -3,10 +3,13 @@
 <body class="bg-slate-100">
 
     <button id="userBtn"
-        class="rounded-full bg-white hover:bg-gray-50 text-slate-700 p-1 text-lg border border-slate-300 cursor-pointer absolute top-3 right-3 text-center"
+        class="rounded-full bg-white hover:bg-gray-50 text-slate-700 m-1 text-lg border border-slate-300 cursor-pointer absolute top-3 right-3 text-center"
         title="user">
-        <img id="userIcon" width="36" height="36" src="https://img.icons8.com/pastel-glyph/64/user-male-circle.png"
-            alt="user-male-circle" />
+            <% if (user.image && user.image.data) { %>
+                <img src="/user/<%= user.id %>/image" alt="profile image" class="w-12 h-12 rounded-full">
+            <% } else { %>
+                <img id="userIcon" width="36" height="36" src="https://img.icons8.com/pastel-glyph/64/user-male-circle.png" alt="user-male-circle" />
+            <% } %>
     </button>
 
     <!-- dropdown -->

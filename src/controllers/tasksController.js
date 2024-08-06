@@ -7,9 +7,9 @@ export const getTasks = async (req, res) => {
         if(req.session.updateErrors){
             const options = req.session.updateErrors;
             delete req.session.updateErrors;
-            return res.render('index', {tasks, ...options});
+            return res.render('index', {tasks, user: req.user, ...options});
         }
-        return res.render('index', { tasks, title: "Home | To-Do App" });
+        return res.render('index', { tasks, user: req.user, title: "Home | To-Do App" });
     } catch(error) {
         console.log(error.message);
     }

@@ -34,6 +34,7 @@ export const signup = async (req, res, next) => {
     if (!result.isEmpty()){
         const errors = result.array();
         const errorMessage = {
+            fullNameError: errors.find(item => item.path === "fullName")?.msg,
             usernameError: errors.find(item => item.path === "username")?.msg,
             emailError: errors.find(item => item.path === "email")?.msg,
             passwordError: errors.find(item => item.path === "password")?.msg,
@@ -41,20 +42,11 @@ export const signup = async (req, res, next) => {
         };
         return res.status(400).render('signup', { errorMessage, title: "Signup | To-Do App" });
     }
-    const { username, email, password } = matchedData(req);
+    const { fullName, username, email, password } = matchedData(req);
 
     try {
-        const usersWithSameUsername = await User.find({username});
-        if(usersWithSameUsername.length > 0){
-            return res.status(400).render('signup', { errorMessage: {usernameError: 'username is already taken!'}, title: "Signup | To-Do App" });
-        }
-        const usersWithSameEmail = await User.find({email});
-        if(usersWithSameEmail.length > 0){
-            return res.status(400).render('signup', { errorMessage: {emailError: 'There is already an account with that Email'}, title: "Signup | To-Do App" });
-        }
-    
         const hashedPassword = await hashPassword(password);
-        const newUser = new User({ username, email, password: hashedPassword });
+        const newUser = new User({ fullName, username, email, password: hashedPassword });
         
         await newUser.save();
         next();

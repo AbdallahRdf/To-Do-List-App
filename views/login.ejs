@@ -18,7 +18,7 @@
                 <label class="mb-1 ms-2 text-slate-600" for="password">Password</label>
                 <input class="rounded-full text-base border border-slate-500 py-2 px-4 me-1" type="password" name="password" placeholder="password" id="password">
                 <button type="button" id="showPasswordBtn" class="absolute top-9 right-4">
-                    <img src="/img/icons8-eye-48.png" width="22" alt="show password" title="show password">
+                    <img id="passwordImg" src="/img/icons8-eye-48.png" width="22" alt="show password" title="show password">
                 </button>
                 <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
                     <span class="text-red-500 text-sm ms-2 mt-1"><%= errorMessage.passwordError %></span>
@@ -35,8 +35,16 @@
 
     <script>
         const passwordInput = document.querySelector("#password");
+        const passwordImg = document.querySelector("#passwordImg");
 
-        document.querySelector("#showPasswordBtn").addEventListener("click", () => passwordInput.type = (passwordInput.type === "password") ? "text" : "password")
-    </script>
+        document.querySelector("#showPasswordBtn").addEventListener("click", () => {
+            if(passwordInput.type === "password"){
+                passwordInput.type = "text";
+                passwordImg.src = "/img/icons8-closed-eye-48.png";
+            } else {
+                passwordInput.type = "password";
+                passwordImg.src = "/img/icons8-eye-48.png";
+            }
+        });    </script>
 </body>
 </html>

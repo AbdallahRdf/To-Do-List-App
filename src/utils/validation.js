@@ -1,3 +1,5 @@
+import User from "../mongoose/schemas/user.js";
+
 export const loginValidationSchema = {
     username: {
         trim: true,
@@ -20,6 +22,15 @@ export const loginValidationSchema = {
 }
 
 export const signupValidationSchema = {
+    fullName: {
+        trim: true,
+        notEmpty: {
+            errorMessage: "Full Name must not be empty"
+        },
+        isString: {
+            errorMessage: "Full Name must be a string"
+        }
+    },
     username: {
         trim: true,
         notEmpty: {
@@ -27,6 +38,15 @@ export const signupValidationSchema = {
         },
         isString: {
             errorMessage: "username must be a string"
+        },
+        custom: {
+            options: async (value) => {
+                const user = await User.findOne({ username: value })
+                if(user){
+                    throw new Error('Username is already in use');
+                }
+                return true;
+            }
         }
     },
     email: {
@@ -39,6 +59,15 @@ export const signupValidationSchema = {
         },
         isEmail: {
             errorMessage: "Email must be a valid Email format"
+        },
+        custom: {
+            options: async (value) => {
+                const user = await User.findOne({ email: value })
+                if(user){
+                    throw new Error('Email address is already in use');
+                }
+                return true;
+            }
         }
     },
     password: {

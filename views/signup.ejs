@@ -5,14 +5,21 @@
         <h2 class="text-3xl text-slate-600">Create an account</h2>
         <form action="/signup" method="post" class="w-full">
             <div class="flex flex-col w-full my-3">
+                <label class="mb-1 ms-2 text-slate-600" for="fullName">Full Name</label>
+                <input class="rounded-full text-base border border-slate-500 py-2 px-4 me-1" type="text" name="fullName" placeholder="John Doe">
+                <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+                    <span class="text-red-500 text-sm ms-2 mt-1"><%= errorMessage.fullNameError %></span>
+                <% } %>
+            </div>
+            <div class="flex flex-col w-full my-3">
                 <label class="mb-1 ms-2 text-slate-600" for="username">Username</label>
-                <input class="rounded-full text-base border border-slate-500 py-2 px-4 me-1" type="text" name="username" placeholder="John Doe">
+                <input class="rounded-full text-base border border-slate-500 py-2 px-4 me-1" type="text" name="username" placeholder="Johnoe">
                 <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
                     <span class="text-red-500 text-sm ms-2 mt-1"><%= errorMessage.usernameError %></span>
                 <% } %>
             </div>
             <div class="flex flex-col w-full my-3">
-                <label class="mb-1 ms-2 text-slate-600" for="email">Email</label>
+                <label class="mb-1 ms-2 text-slate-600" for="email">Email Address</label>
                 <input class="rounded-full text-base border border-slate-500 py-2 px-4 me-1" type="email" name="email" placeholder="johndoe@gmail.com">
                 <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
                     <span class="text-red-500 text-sm ms-2 mt-1"><%= errorMessage.emailError %></span>
@@ -22,7 +29,7 @@
                 <label class="mb-1 ms-2 text-slate-600" for="password">Password</label>
                 <input class="rounded-full text-base border border-slate-500 py-2 ps-4 pe-12 me-1" type="password" name="password" placeholder="password" id="password">
                 <button type="button" id="showPasswordBtn" class="absolute top-9 right-4">
-                    <img src="/img/icons8-eye-48.png" width="22" alt="show password" title="show password">
+                    <img id="passwordImg" src="/img/icons8-eye-48.png" width="22" alt="show password" title="show password">
                 </button>
                 <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
                     <span class="text-red-500 text-sm ms-2 mt-1"><%= errorMessage.passwordError %></span>
@@ -32,7 +39,7 @@
                 <label class="mb-1 ms-2 text-slate-600" for="confirmPassword">Confirm Password</label>
                 <input class="rounded-full text-base border border-slate-500 py-2 ps-4 pe-12 me-1" type="password" name="confirmPassword" placeholder="Confirm password" id="confirmPassword">
                 <button type="button" id="showConfirmPasswordBtn" class="absolute top-9 right-4">
-                    <img src="/img/icons8-eye-48.png" width="22" alt="show password" title="show password">
+                    <img id="confirmPasswordImg" src="/img/icons8-eye-48.png" width="22" alt="show password" title="show password">
                 </button>
                 <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
                     <span class="text-red-500 text-sm ms-2 mt-1"><%= errorMessage.confirmPasswordError %></span>
@@ -47,12 +54,30 @@
     </div>
 
     <script>
+        const passwordImg = document.querySelector("#passwordImg");
+        const confirmPasswordImg = document.querySelector("#confirmPasswordImg");
         const passwordInput = document.querySelector("#password");
         const confirmPasswordInput = document.querySelector("#confirmPassword");
 
-        document.querySelector("#showPasswordBtn").addEventListener("click", () => passwordInput.type = (passwordInput.type === "password") ? "text" : "password")
+        document.querySelector("#showPasswordBtn").addEventListener("click", () => {
+            if(passwordInput.type === "password"){
+                passwordInput.type = "text";
+                passwordImg.src = "/img/icons8-closed-eye-48.png";
+            } else {
+                passwordInput.type = "password";
+                passwordImg.src = "/img/icons8-eye-48.png";
+            }
+        });
 
-        document.querySelector("#showConfirmPasswordBtn").addEventListener("click", () => confirmPasswordInput.type = (confirmPasswordInput.type === "password") ? "text" : "password")
+        document.querySelector("#showConfirmPasswordBtn").addEventListener("click", () => {
+            if(confirmPasswordInput.type === "password"){
+                confirmPasswordInput.type = "text";
+                confirmPasswordImg.src = "/img/icons8-closed-eye-48.png";
+            } else {
+                confirmPasswordInput.type = "password";
+                confirmPasswordImg.src = "/img/icons8-eye-48.png";
+            }
+        })
     </script>
 </body>
 </html>
