@@ -15,7 +15,7 @@ const port = process.env.PORT || 5000;
 
 const app = express();
 
-app.use(express.static(path.join(import.meta.dirname, 'public')));
+app.disable('x-powered-by');
 
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log("connected to the db"))
@@ -38,6 +38,8 @@ app.use(flash());
 
 app.set("view engine", "ejs");
 app.set("views", path.join(import.meta.dirname, "views"));
+app.use(express.static(path.join(import.meta.dirname, 'public')));
+
 app.use(express.urlencoded({ extended: true }));
 
 const storage = multer.memoryStorage();
